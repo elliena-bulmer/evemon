@@ -73,7 +73,7 @@
             this.grpInput.Controls.Add(this.lblMatEfficiency);
             this.grpInput.Location = new System.Drawing.Point(12, 3);
             this.grpInput.Name = "grpInput";
-            this.grpInput.Size = new System.Drawing.Size(356, 87);
+            this.grpInput.Size = new System.Drawing.Size(360, 87);
             this.grpInput.TabIndex = 9;
             this.grpInput.TabStop = false;
             // 
@@ -153,7 +153,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(380, 458);
+            this.ClientSize = new System.Drawing.Size(384, 462);
             this.Controls.Add(this.grpInput);
             this.Controls.Add(this.btnClose);
             this.Controls.Add(this.treeMaterials);
