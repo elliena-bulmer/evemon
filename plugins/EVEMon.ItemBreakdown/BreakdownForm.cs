@@ -106,7 +106,6 @@ namespace EVEMon.ItemBreakdown
         /// </summary>
         /// <param name="sender">control sender</param>
         /// <param name="e">event args</param>
-
         private void numRunCount_ValueChanged(object sender, EventArgs e)
         {
             _currentRunCount = (int)numRunCount.Value;
@@ -127,7 +126,7 @@ namespace EVEMon.ItemBreakdown
             {
                 return;
             }
-
+            
             Task<TreeNode> nodeResult = Task.Run(() => UpdateTask());           
         }
 
@@ -139,31 +138,55 @@ namespace EVEMon.ItemBreakdown
         {
             _isUpdating = true;
 
-            TreeNode node = new TreeNode(string.Format("{0:N0} {1}", _currentRunCount, _selectedBlueprint.Name));
-
-            List<TreeNode> childNodes = new List<TreeNode>();
+            // Compute the list of needed items.
+            BreakdownItem root = new BreakdownItem()
+            {
+                Name = _selectedBlueprint.Name,
+                Quantity = _currentRunCount
+            };
             foreach (var mat in _selectedBlueprint.MaterialRequirements)
-            {                
-                TreeNode toAdd = RecursiveMaterialExpanding(mat, GetMaterialAmount(mat.Quantity));
+            {
+                BreakdownItem toAdd = RecursiveItemBreakdownComputing(mat, GetMaterialAmount(mat.Quantity));
                 if (toAdd != null)
                 {
-                    childNodes.Add(toAdd);
+                    root.MaterialList.Add(toAdd);
                 }
             }
-            node.Nodes.AddRange(childNodes.ToArray());
 
-            if (this.treeMaterials.InvokeRequired)
+            // Display the full extensive list.
+            TreeNode outputNodeExtensive = RecursiveBuildExtensiveList(root);
+
+            // Only display the end levels totals.
+            TreeNode outputNodeCompressed = new TreeNode(string.Format("{0:N0} {1}", root.Quantity, root.Name));
+            List<BreakdownItem> itemList = RecursiveBuildCondensedList(root);
+            IEnumerable<TreeNode> nodeList = CondenseAndGenerateTreeNodeFromCondensedList(itemList);
+            foreach (TreeNode node in nodeList)
             {
-                this.treeMaterials.BeginInvoke((MethodInvoker)delegate () 
+                outputNodeCompressed.Nodes.Add(node);
+            }                
+
+            // update the trees
+            if (treeBreakdown.InvokeRequired)
+            {
+                treeBreakdown.BeginInvoke((MethodInvoker)delegate () 
                 {
-                    this.treeMaterials.Nodes.Clear();
-                    this.treeMaterials.Nodes.Add(node);
-                    this.treeMaterials.ExpandAll();
+                    treeBreakdown.Nodes.Clear();
+                    treeBreakdown.Nodes.Add(outputNodeExtensive);
+                    treeBreakdown.ExpandAll();
+                });
+            }
+            if (treeCondensed.InvokeRequired)
+            {
+                treeCondensed.BeginInvoke((MethodInvoker)delegate ()
+                {
+                    treeCondensed.Nodes.Clear();
+                    treeCondensed.Nodes.Add(outputNodeCompressed);
+                    treeCondensed.ExpandAll();
                 });
             }
 
             _isUpdating = false;
-            return node;
+            return outputNodeExtensive;
         }
 
         /// <summary>
@@ -171,32 +194,111 @@ namespace EVEMon.ItemBreakdown
         /// </summary>
         /// <param name="mats">The material information required by the blueprint.</param>
         /// <param name="qte">The quantity of the material.</param>
-        /// <returns>A partial Treenode </returns>
-        private TreeNode RecursiveMaterialExpanding(StaticRequiredMaterial mats, long qte)
+        /// <returns>A partial BreakdownItem object</returns>
+        private BreakdownItem RecursiveItemBreakdownComputing(StaticRequiredMaterial mats, long qte)
         {
             if (mats.Activity == Common.Enumerations.BlueprintActivity.Manufacturing)
             {
-                TreeNode node = new TreeNode(string.Format("{0:N0} {1}", qte, mats.Name));
-
+                BreakdownItem root = new BreakdownItem()
+                {
+                    Name = mats.Name,
+                    Quantity = qte
+                };
+                
                 IEnumerable<Blueprint> subBp = _blueprintList.Where(bp => bp.Name.Equals(mats.Name + " blueprint", StringComparison.OrdinalIgnoreCase));
                 if (subBp.Count() == 1)
                 {
-                    List<TreeNode> childNodes = new List<TreeNode>();
                     foreach (var mat in subBp.First().MaterialRequirements)
                     {
-                        TreeNode toAdd = RecursiveMaterialExpanding(mat, qte * GetMaterialAmount(mat.Quantity));
+                        BreakdownItem toAdd = RecursiveItemBreakdownComputing(mat, qte * GetMaterialAmount(mat.Quantity));
                         if (toAdd != null)
                         {
-                            childNodes.Add(toAdd);
+                            root.MaterialList.Add(toAdd);
                         }
                     }
-                    node.Nodes.AddRange(childNodes.ToArray());
                 }
-                return node;
+                return root;
             }
             return null;
         }
 
+        /// <summary>
+        /// Method that recursively builds the Extended List of material according to a BreakdownItem input.
+        /// </summary>
+        /// <param name="input">the Partial or not BreakdownItem object</param>
+        /// <returns>A Treenode containing all the extensive information.</returns>
+        private TreeNode RecursiveBuildExtensiveList(BreakdownItem input)
+        {
+            TreeNode node = new TreeNode(string.Format("{0:N0} {1}", input.Quantity, input.Name));
+            foreach (var mat in input.MaterialList)
+            {
+                TreeNode toAdd = RecursiveBuildExtensiveList(mat);
+                if (toAdd != null)
+                {
+                    node.Nodes.Add(toAdd);
+                }
+            }
+            return node;
+        }
+
+        /// <summary>
+        /// Method that recursively builds the flatten List of material according to a BreakdownItem input.
+        /// </summary>
+        /// <param name="input">the Partial or not BreakdownItem object</param>
+        /// <returns>A List of BreakdownItem containing the condensed information.</returns>
+        private List<BreakdownItem> RecursiveBuildCondensedList(BreakdownItem input)
+        {
+            List<BreakdownItem> list = new List<BreakdownItem>();
+            if (input.MaterialList.Any())
+            {
+                foreach (var mat in input.MaterialList)
+                {
+                    list.AddRange(RecursiveBuildCondensedList(mat));
+                }
+            }
+            else
+            {
+                list.Add(new BreakdownItem() { Name = input.Name, Quantity = input.Quantity} );
+            }
+            return list;
+        }
+
+        /// <summary>
+        /// Method that will condense and generate a Treenode from the BreakdownItem flat list.
+        /// </summary>
+        /// <param name="breakdownList">A Flatten list of BreakdownItems</param>
+        /// <returns>A Treenode containing all the flatten information.</returns>
+        private IEnumerable<TreeNode> CondenseAndGenerateTreeNodeFromCondensedList(List<BreakdownItem> breakdownList)
+        {
+            List<TreeNode> output = new List<TreeNode>();
+
+            var orderedList = breakdownList.OrderBy(item => item.Name);
+            var outputList = new List<BreakdownItem>();
+            foreach (var item in orderedList)
+            {
+                // if we don't have any in the output list yet, handle this item type
+                if (!outputList.Any(x => x.Name == item.Name))
+                {
+                    BreakdownItem newItem = new BreakdownItem() { Name = item.Name };
+                    long count = 0;
+                    var sameItemList = orderedList.Where(x => x.Name == item.Name);
+                    foreach (var sameItem in sameItemList)
+                    {
+                        count += sameItem.Quantity;
+                    }
+                    newItem.Quantity = count;
+                    outputList.Add(newItem);
+                }
+            }
+
+            foreach (BreakdownItem item in outputList)
+            {
+                output.Add(new TreeNode(string.Format("{0:N0} {1}", item.Quantity, item.Name)));
+            }
+
+            return output;
+        }
+        
         /// <summary>
         /// Method that will return the amount of material required depending on the initial value and the curent input of the user.
         /// </summary>
@@ -207,7 +309,8 @@ namespace EVEMon.ItemBreakdown
             double multiplier = (double)(1.0 - ((double)_currentMatEfficiency / 100.0));
             return (long)Math.Ceiling(_currentRunCount * ((double)qte * multiplier));
         }
-        
+
         #endregion Methods
+
     }
 }

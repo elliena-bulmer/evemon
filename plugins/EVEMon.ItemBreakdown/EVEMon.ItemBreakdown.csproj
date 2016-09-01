@@ -73,6 +73,7 @@
     <Compile Include="BreakdownForm.Designer.cs">
       <DependentUpon>BreakdownForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="BreakdownItem.cs" />
     <Compile Include="PluginItemBreakdown.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
