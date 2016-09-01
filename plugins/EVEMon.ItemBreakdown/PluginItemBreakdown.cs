@@ -13,6 +13,9 @@ namespace EVEMon.ItemBreakdown
 
         private ToolStripMenuItem _mnuItemBreakdown;
 
+        private const string _pluginName = "ItemBreakdown";
+        private const string _pluginVersion = "0.1";
+
         #endregion Fields
 
 
@@ -35,10 +38,10 @@ namespace EVEMon.ItemBreakdown
         #endregion Constructor
 
 
-        #region Properties
+        #region IPluginMenuItem Implementation
 
         /// <summary>
-        /// Method that returns the Menu item list for the plugin generator.
+        /// property that returns the Menu item list for the plugin generator.
         /// </summary>
         public IEnumerable<ToolStripMenuItem> MenuItemList
         {
@@ -50,7 +53,23 @@ namespace EVEMon.ItemBreakdown
             }
         }
 
-        #endregion Properties
+        /// <summary>
+        /// property that returns the plugin Name to the system.
+        /// </summary>
+        public string PluginName
+        {
+            get { return _pluginName; }
+        }
+
+        /// <summary>
+        /// property that returns the plugin version to the system.
+        /// </summary>
+        public string PluginVersion
+        {
+            get { return _pluginVersion; }
+        }
+
+        #endregion IPluginMenuItem Implementation
 
 
         #region Event Handler
@@ -67,20 +86,6 @@ namespace EVEMon.ItemBreakdown
         }
 
         #endregion Event Handler
-
-
-        #region Method
-
-        /// <summary>
-        /// Method that returns the plugin Name to the system.
-        /// </summary>
-        /// <returns>A string representation of the Plugin's name.</returns>
-        public string PluginName()
-        {
-            return "ItemBreakdown";
-        }
-
-        #endregion Method
 
     }
 }
