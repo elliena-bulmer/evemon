@@ -3,6 +3,8 @@ using System.Windows.Forms;
 using System.Collections.Generic;
 
 using EVEMon.Common.PluginSytem;
+using EVEMon.Common.Data;
+using System.Linq;
 
 namespace EVEMon.ItemBreakdown
 {
@@ -13,8 +15,10 @@ namespace EVEMon.ItemBreakdown
 
         private ToolStripMenuItem _mnuItemBreakdown;
 
-        private const string _pluginName = "ItemBreakdown";
+        private const string _pluginName = "Item Breakdown";
         private const string _pluginVersion = "0.1";
+
+        private IEnumerable<Blueprint> _blueprintList;
 
         #endregion Fields
 
@@ -33,6 +37,9 @@ namespace EVEMon.ItemBreakdown
             mnuItemBreakdown.Click += new System.EventHandler(mnuItemBreakdown_Click);
 
             _mnuItemBreakdown = mnuItemBreakdown;
+
+            //Populates the list of plugins from SDE
+            LoadSDEInfo();
         }
 
         #endregion Constructor
@@ -81,11 +88,26 @@ namespace EVEMon.ItemBreakdown
         /// <param name="e">event args</param>
         private void mnuItemBreakdown_Click(object sender, EventArgs e)
         {
-            BreakdownForm form = new BreakdownForm();
+            BreakdownForm form = new BreakdownForm(_blueprintList);
             form.Show();
         }
 
         #endregion Event Handler
+
+
+        #region Methods
+        
+        /// <summary>
+        /// Method to load the SDE information needed.
+        /// </summary>
+        private void LoadSDEInfo()
+        {
+            // TODO: add a check to know if the StaticBlueprint is fully loaded.
+            _blueprintList = StaticBlueprints.AllBlueprints.OrderBy(b => b.Name);
+        }
+
+        #endregion Methods
+
 
     }
 }

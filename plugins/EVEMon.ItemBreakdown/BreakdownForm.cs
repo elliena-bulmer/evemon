@@ -13,6 +13,7 @@ namespace EVEMon.ItemBreakdown
     /// </summary>
     public partial class BreakdownForm : Form
     {
+
         #region Fields
 
         private IEnumerable<Blueprint> _blueprintList;
@@ -30,12 +31,20 @@ namespace EVEMon.ItemBreakdown
         /// <summary>
         /// Constructor for the BreakdownForm.
         /// </summary>
-        public BreakdownForm()
+        /// <param name="bpList">The IEnumerable of Blueprint to use.</param>
+        public BreakdownForm(IEnumerable<Blueprint> bpList)
         {
             InitializeComponent();
 
-            // init SDE data
-            LoadSDEInfo();
+            // Add the list of blueprints to the combobox.
+            _blueprintList = bpList;
+            foreach (Blueprint bp in bpList)
+            {
+                if (bp.MaterialRequirements.Any())
+                {
+                    cboItemName.Items.Add(bp.Name);
+                }
+            }
         }
 
         #endregion Constructor
@@ -107,23 +116,6 @@ namespace EVEMon.ItemBreakdown
         #endregion Event Handler
 
         #region Methods
-
-        /// <summary>
-        /// Method to load the SDE information needed.
-        /// </summary>
-        private void LoadSDEInfo()
-        {
-            // TODO: add a check to know if the StaticBlueprint is fully loaded.
-
-            _blueprintList = StaticBlueprints.AllBlueprints.OrderBy(b => b.Name);
-            foreach(Blueprint bp in _blueprintList)
-            {
-                if (bp.MaterialRequirements.Any())
-                {
-                    cboItemName.Items.Add(bp.Name);
-                }
-            }            
-        }
 
         /// <summary>
         /// Method that tries to update the material list.
