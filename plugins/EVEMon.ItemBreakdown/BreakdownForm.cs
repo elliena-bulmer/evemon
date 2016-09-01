@@ -146,7 +146,7 @@ namespace EVEMon.ItemBreakdown
             };
             foreach (var mat in _selectedBlueprint.MaterialRequirements)
             {
-                BreakdownItem toAdd = RecursiveItemBreakdownComputing(mat, GetMaterialAmount(mat.Quantity));
+                BreakdownItem toAdd = RecursiveItemBreakdownComputing(mat, GetMaterialAmount(mat.Quantity, _currentRunCount));
                 if (toAdd != null)
                 {
                     root.MaterialList.Add(toAdd);
@@ -210,7 +210,7 @@ namespace EVEMon.ItemBreakdown
                 {
                     foreach (var mat in subBp.First().MaterialRequirements)
                     {
-                        BreakdownItem toAdd = RecursiveItemBreakdownComputing(mat, qte * GetMaterialAmount(mat.Quantity));
+                        BreakdownItem toAdd = RecursiveItemBreakdownComputing(mat, qte * GetMaterialAmount(mat.Quantity, 1));
                         if (toAdd != null)
                         {
                             root.MaterialList.Add(toAdd);
@@ -304,10 +304,10 @@ namespace EVEMon.ItemBreakdown
         /// </summary>
         /// <param name="qte">The initial material quantity.</param>
         /// <returns>The quantity of material required with the current input provided.</returns>
-        private long GetMaterialAmount(long qte)
+        private long GetMaterialAmount(long qte, int runCount)
         {
             double multiplier = (double)(1.0 - ((double)_currentMatEfficiency / 100.0));
-            return (long)Math.Ceiling(_currentRunCount * ((double)qte * multiplier));
+            return (long)Math.Ceiling(runCount * ((double)qte * multiplier));
         }
 
         #endregion Methods
