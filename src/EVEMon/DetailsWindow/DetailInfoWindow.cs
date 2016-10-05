@@ -5,11 +5,15 @@ using EVEMon.Common.Controls;
 using EVEMon.Common.Extensions;
 using EVEMon.Common.Interfaces;
 
-
 namespace EVEMon.DetailsWindow
 {
+    // TODO:
+    // -Add a way to handle IEnumerables values to have the values from it instead of the type.
+
     public sealed partial class DetailInfoWindow : EVEMonForm
     {
+
+        #region Constructor
 
         /// <summary>
         /// Initializes a new instance of the <see cref="DetailInfoWindow"/> class.
@@ -48,9 +52,27 @@ namespace EVEMon.DetailsWindow
             lvDetails.AutoResizeColumns(ColumnHeaderAutoResizeStyle.HeaderSize);
         }
 
+        #endregion Constructor
+
+
+        #region Events Handlers
+
         private void btnOk_Click(object sender, EventArgs e)
         {
             Close();
         }
+
+        private void DetailInfoWindow_ResizeEnd(object sender, EventArgs e)
+        {
+            lvDetails.AutoResizeColumns(ColumnHeaderAutoResizeStyle.HeaderSize);
+        }
+
+        private void DetailInfoWindow_Resize(object sender, EventArgs e)
+        {
+            lvDetails.AutoResizeColumns(ColumnHeaderAutoResizeStyle.HeaderSize);
+        }
+
+        #endregion Events Handlers
+
     }
 }
