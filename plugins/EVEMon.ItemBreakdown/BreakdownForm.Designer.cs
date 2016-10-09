@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.btnClose = new System.Windows.Forms.Button();
             this.grpInput = new System.Windows.Forms.GroupBox();
             this.numRunCount = new System.Windows.Forms.NumericUpDown();
@@ -41,12 +42,27 @@
             this.treeBreakdown = new System.Windows.Forms.TreeView();
             this.tabCondensed = new System.Windows.Forms.TabPage();
             this.treeCondensed = new System.Windows.Forms.TreeView();
+            this.cmnuBreakdown = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.toolStripMenuItemChangeEff = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItemEff0 = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItemEff1 = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItemEff2 = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItemEff3 = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItemEff4 = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItemEff5 = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItemEff6 = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItemEff7 = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItemEff8 = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItemEff9 = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItemEff10 = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItemEffInput = new System.Windows.Forms.ToolStripMenuItem();
             this.grpInput.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numRunCount)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numMatEfficiency)).BeginInit();
             this.tcMaterialView.SuspendLayout();
             this.tabBreakdown.SuspendLayout();
             this.tabCondensed.SuspendLayout();
+            this.cmnuBreakdown.SuspendLayout();
             this.SuspendLayout();
             // 
             // btnClose
@@ -179,6 +195,7 @@
             this.treeBreakdown.Name = "treeBreakdown";
             this.treeBreakdown.Size = new System.Drawing.Size(340, 288);
             this.treeBreakdown.TabIndex = 1;
+            this.treeBreakdown.NodeMouseClick += new System.Windows.Forms.TreeNodeMouseClickEventHandler(this.treeBreakdown_NodeMouseClick);
             // 
             // tabCondensed
             // 
@@ -201,6 +218,116 @@
             this.treeCondensed.Size = new System.Drawing.Size(340, 288);
             this.treeCondensed.TabIndex = 2;
             // 
+            // cmnuBreakdown
+            // 
+            this.cmnuBreakdown.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.toolStripMenuItemChangeEff});
+            this.cmnuBreakdown.Name = "cmnuBreakdown";
+            this.cmnuBreakdown.Size = new System.Drawing.Size(170, 26);
+            // 
+            // toolStripMenuItemChangeEff
+            // 
+            this.toolStripMenuItemChangeEff.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.toolStripMenuItemEff0,
+            this.toolStripMenuItemEff1,
+            this.toolStripMenuItemEff2,
+            this.toolStripMenuItemEff3,
+            this.toolStripMenuItemEff4,
+            this.toolStripMenuItemEff5,
+            this.toolStripMenuItemEff6,
+            this.toolStripMenuItemEff7,
+            this.toolStripMenuItemEff8,
+            this.toolStripMenuItemEff9,
+            this.toolStripMenuItemEff10,
+            this.toolStripMenuItemEffInput});
+            this.toolStripMenuItemChangeEff.Name = "toolStripMenuItemChangeEff";
+            this.toolStripMenuItemChangeEff.Size = new System.Drawing.Size(169, 22);
+            this.toolStripMenuItemChangeEff.Text = "Change Efficiency";
+            // 
+            // toolStripMenuItemEff0
+            // 
+            this.toolStripMenuItemEff0.Name = "toolStripMenuItemEff0";
+            this.toolStripMenuItemEff0.Size = new System.Drawing.Size(154, 22);
+            this.toolStripMenuItemEff0.Text = "0%";
+            this.toolStripMenuItemEff0.Click += new System.EventHandler(this.UpdateEfficiency);
+            // 
+            // toolStripMenuItemEff1
+            // 
+            this.toolStripMenuItemEff1.Name = "toolStripMenuItemEff1";
+            this.toolStripMenuItemEff1.Size = new System.Drawing.Size(154, 22);
+            this.toolStripMenuItemEff1.Text = "1%";
+            this.toolStripMenuItemEff1.Click += new System.EventHandler(this.UpdateEfficiency);
+            // 
+            // toolStripMenuItemEff2
+            // 
+            this.toolStripMenuItemEff2.Name = "toolStripMenuItemEff2";
+            this.toolStripMenuItemEff2.Size = new System.Drawing.Size(154, 22);
+            this.toolStripMenuItemEff2.Text = "2%";
+            this.toolStripMenuItemEff2.Click += new System.EventHandler(this.UpdateEfficiency);
+            // 
+            // toolStripMenuItemEff3
+            // 
+            this.toolStripMenuItemEff3.Name = "toolStripMenuItemEff3";
+            this.toolStripMenuItemEff3.Size = new System.Drawing.Size(154, 22);
+            this.toolStripMenuItemEff3.Text = "3%";
+            this.toolStripMenuItemEff3.Click += new System.EventHandler(this.UpdateEfficiency);
+            // 
+            // toolStripMenuItemEff4
+            // 
+            this.toolStripMenuItemEff4.Name = "toolStripMenuItemEff4";
+            this.toolStripMenuItemEff4.Size = new System.Drawing.Size(154, 22);
+            this.toolStripMenuItemEff4.Text = "4%";
+            this.toolStripMenuItemEff4.Click += new System.EventHandler(this.UpdateEfficiency);
+            // 
+            // toolStripMenuItemEff5
+            // 
+            this.toolStripMenuItemEff5.Name = "toolStripMenuItemEff5";
+            this.toolStripMenuItemEff5.Size = new System.Drawing.Size(154, 22);
+            this.toolStripMenuItemEff5.Text = "5%";
+            this.toolStripMenuItemEff5.Click += new System.EventHandler(this.UpdateEfficiency);
+            // 
+            // toolStripMenuItemEff6
+            // 
+            this.toolStripMenuItemEff6.Name = "toolStripMenuItemEff6";
+            this.toolStripMenuItemEff6.Size = new System.Drawing.Size(154, 22);
+            this.toolStripMenuItemEff6.Text = "6%";
+            this.toolStripMenuItemEff6.Click += new System.EventHandler(this.UpdateEfficiency);
+            // 
+            // toolStripMenuItemEff7
+            // 
+            this.toolStripMenuItemEff7.Name = "toolStripMenuItemEff7";
+            this.toolStripMenuItemEff7.Size = new System.Drawing.Size(154, 22);
+            this.toolStripMenuItemEff7.Text = "7%";
+            this.toolStripMenuItemEff7.Click += new System.EventHandler(this.UpdateEfficiency);
+            // 
+            // toolStripMenuItemEff8
+            // 
+            this.toolStripMenuItemEff8.Name = "toolStripMenuItemEff8";
+            this.toolStripMenuItemEff8.Size = new System.Drawing.Size(154, 22);
+            this.toolStripMenuItemEff8.Text = "8%";
+            this.toolStripMenuItemEff8.Click += new System.EventHandler(this.UpdateEfficiency);
+            // 
+            // toolStripMenuItemEff9
+            // 
+            this.toolStripMenuItemEff9.Name = "toolStripMenuItemEff9";
+            this.toolStripMenuItemEff9.Size = new System.Drawing.Size(154, 22);
+            this.toolStripMenuItemEff9.Text = "9%";
+            this.toolStripMenuItemEff9.Click += new System.EventHandler(this.UpdateEfficiency);
+            // 
+            // toolStripMenuItemEff10
+            // 
+            this.toolStripMenuItemEff10.Name = "toolStripMenuItemEff10";
+            this.toolStripMenuItemEff10.Size = new System.Drawing.Size(154, 22);
+            this.toolStripMenuItemEff10.Text = "10%";
+            this.toolStripMenuItemEff10.Click += new System.EventHandler(this.UpdateEfficiency);
+            // 
+            // toolStripMenuItemEffInput
+            // 
+            this.toolStripMenuItemEffInput.Name = "toolStripMenuItemEffInput";
+            this.toolStripMenuItemEffInput.Size = new System.Drawing.Size(154, 22);
+            this.toolStripMenuItemEffInput.Text = "Manual Input...";
+            this.toolStripMenuItemEffInput.Click += new System.EventHandler(this.UpdateEfficiency);
+            // 
             // BreakdownForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -219,6 +346,7 @@
             this.tcMaterialView.ResumeLayout(false);
             this.tabBreakdown.ResumeLayout(false);
             this.tabCondensed.ResumeLayout(false);
+            this.cmnuBreakdown.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -237,5 +365,19 @@
         private System.Windows.Forms.TreeView treeBreakdown;
         private System.Windows.Forms.TabPage tabCondensed;
         private System.Windows.Forms.TreeView treeCondensed;
+        private System.Windows.Forms.ContextMenuStrip cmnuBreakdown;
+        private System.Windows.Forms.ToolStripMenuItem toolStripMenuItemChangeEff;
+        private System.Windows.Forms.ToolStripMenuItem toolStripMenuItemEff0;
+        private System.Windows.Forms.ToolStripMenuItem toolStripMenuItemEff1;
+        private System.Windows.Forms.ToolStripMenuItem toolStripMenuItemEff2;
+        private System.Windows.Forms.ToolStripMenuItem toolStripMenuItemEff3;
+        private System.Windows.Forms.ToolStripMenuItem toolStripMenuItemEff4;
+        private System.Windows.Forms.ToolStripMenuItem toolStripMenuItemEff5;
+        private System.Windows.Forms.ToolStripMenuItem toolStripMenuItemEff6;
+        private System.Windows.Forms.ToolStripMenuItem toolStripMenuItemEff7;
+        private System.Windows.Forms.ToolStripMenuItem toolStripMenuItemEff8;
+        private System.Windows.Forms.ToolStripMenuItem toolStripMenuItemEff9;
+        private System.Windows.Forms.ToolStripMenuItem toolStripMenuItemEff10;
+        private System.Windows.Forms.ToolStripMenuItem toolStripMenuItemEffInput;
     }
 }

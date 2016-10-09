@@ -74,6 +74,12 @@
       <DependentUpon>BreakdownForm.cs</DependentUpon>
     </Compile>
     <Compile Include="BreakdownItem.cs" />
+    <Compile Include="ManualInputForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ManualInputForm.Designer.cs">
+      <DependentUpon>ManualInputForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="PluginItemBreakdown.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -87,6 +93,9 @@
   <ItemGroup>
     <EmbeddedResource Include="BreakdownForm.resx">
       <DependentUpon>BreakdownForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ManualInputForm.resx">
+      <DependentUpon>ManualInputForm.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
